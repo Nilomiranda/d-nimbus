@@ -6,7 +6,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>Time vault</title>
+        <title>Nimbus | File Sharing</title>
         <meta charSet="utf-8" />
       </Head>
       <ChakraProvider>

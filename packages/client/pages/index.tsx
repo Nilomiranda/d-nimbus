@@ -1,6 +1,16 @@
 const Index = () => {
   return (
-    <h1>Nimbus</h1>
+    <div>
+      <h1>Nimbus File Sharing</h1>
+
+      <strong>Select a file to be uploaded and shared.</strong>
+      <br /><br />
+
+      <label>
+        <span>Select file</span>
+        <input type="file" />
+      </label>
+    </div>
   )
 }
 
