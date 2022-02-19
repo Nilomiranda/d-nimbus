@@ -31,17 +31,17 @@ app.use(cors({
 app.use(bodyParser())
 app.use(router.routes())
 
-const bree = new Bree({
-  root: false,
-  jobs: [
-    {
-      name: 'jobName',
-      interval: 'Every 1 day',
-      path: path.join(__dirname, '../jobs', 'jobName.js')
-    },
-  ]
-})
-
-bree.stop().then(() => {
-  bree.start()
-})
+// const bree = new Bree({
+//   root: false,
+//   jobs: [
+//     {
+//       name: 'jobName',
+//       interval: 'Every 1 day',
+//       path: path.join(__dirname, '../jobs', 'jobName.js')
+//     },
+//   ]
+// })
+//
+// bree.stop().then(() => {
+//   bree.start()
+// })
