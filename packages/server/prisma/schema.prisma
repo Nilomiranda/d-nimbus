@@ -18,4 +18,5 @@ model File {
     uuid String @unique
     size Int
     mimeType String
+    url String
 }

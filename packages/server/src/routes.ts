@@ -1,6 +1,7 @@
 import Router from 'koa-router'
 import multer from '@koa/multer'
 import {uploadFile} from "./file/uploadFile";
+import {getFile} from "./file/getFile";
 
 const upload = multer();
 
@@ -14,8 +15,7 @@ router.get("/status", async (context) => {
   }
 })
 
-router.post("/upload",
-  upload.single('document'), uploadFile,
-)
+router.post("/upload", upload.single('document'), uploadFile)
+router.get("/file/:id", getFile)
 
 export default router
