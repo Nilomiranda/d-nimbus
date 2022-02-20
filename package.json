@@ -5,6 +5,13 @@
     "start:dev": "npx lerna run dev --stream"
   },
   "devDependencies": {
+    "@types/koa__multer": "^2.0.4",
+    "@types/multer": "^1.4.7",
     "lerna": "^4.0.0"
+  },
+  "dependencies": {
+    "@google-cloud/storage": "^5.18.2",
+    "@koa/multer": "^3.0.0",
+    "multer": "^1.4.4"
   }
 }

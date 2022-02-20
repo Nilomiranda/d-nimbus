@@ -16,4 +16,6 @@ model File {
     name String?
     expiresIn DateTime
     uuid String @unique
+    size Int
+    mimeType String
 }
