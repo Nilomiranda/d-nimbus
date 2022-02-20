@@ -16,7 +16,8 @@ export const uploadFile = async (context: KoaContext) => {
   const uuid = chance.guid({ version: 5 })
 
   try {
-    await googleCloudFile.save(buffer)
+    const uploadedFile = await googleCloudFile.save(buffer)
+    console.log(uploadedFile.)
 
     const savedFile = await prisma.file.create({
       data: {
