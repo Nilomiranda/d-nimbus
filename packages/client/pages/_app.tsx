@@ -1,6 +1,7 @@
 import '../styles/globals.css'
 import { ChakraProvider } from '@chakra-ui/react'
 import Head from 'next/head'
+import { theme } from '../config/theme'
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -9,7 +10,7 @@ function MyApp({ Component, pageProps }) {
         <title>Nimbus | File Sharing</title>
         <meta charSet="utf-8" />
       </Head>
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <Component {...pageProps} />
       </ChakraProvider>
     </>

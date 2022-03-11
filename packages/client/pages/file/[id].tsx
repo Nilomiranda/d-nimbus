@@ -67,7 +67,7 @@ const FilePage = () => {
           <Text fontWeight="bold" fontSize="md">
             {window.location.href}
           </Text>
-          <Button onClick={handleCopyLinkClick} type="button" ml="0.75rem" size="xs">
+          <Button onClick={handleCopyLinkClick} type="button" ml="0.75rem" size="xs" variant="ghost">
             <CopyIcon mr="0.25rem" />
             Copy
           </Button>
