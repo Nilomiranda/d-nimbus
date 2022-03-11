@@ -36,6 +36,12 @@ const FilePage = () => {
     link.click()
   }
 
+  const handleCopyLinkClick = () => {
+    if (typeof window !== 'undefined') {
+      navigator.clipboard.writeText(window.location.href)
+    }
+  }
+
   if (!id) return <h1>Ooops, no file to display</h1>
 
   if (!file && !errorLoadingFile) return <h1>Loading file</h1>
@@ -44,7 +50,12 @@ const FilePage = () => {
 
   return (
     <div>
-      <h1>Here is your link to share your file</h1>
+      <h1>Here's the link to share this file</h1>
+      {typeof window !== 'undefined' ? <strong>{window.location.href}</strong> : null}
+      <button onClick={handleCopyLinkClick} type="button">
+        Copy
+      </button>
+      <br />
 
       <button type="button" onClick={handleDownloadClick}>
         Download file
