@@ -1,5 +1,6 @@
-import {useRef, useState} from "react";
-import {uploadFile} from "../services/file";
+import { Button, Flex, Heading, Input, Text } from '@chakra-ui/react'
+import { useRef, useState } from 'react'
+import { uploadFile } from '../services/file'
 
 const Index = () => {
   const [uploadedFile, setUploadedFile] = useState(null)
@@ -7,7 +8,7 @@ const Index = () => {
   const fileRef = useRef(null)
 
   const handleFileSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
     const file = fileRef.current.files[0]
 
@@ -23,34 +24,32 @@ const Index = () => {
   }
 
   return (
-    <div>
-      <h1>Nimbus File Sharing</h1>
+    <Flex flexDirection="column" alignItems="center" w="100%">
+      <Heading mb="1.75rem">Nimbus File Sharing</Heading>
 
-      <strong>Select a file to be uploaded and shared.</strong>
-      <br /><br />
+      <Text fontWeight="bold" mb="1rem">
+        Select a file to be uploaded and shared.
+      </Text>
+      <br />
+      <br />
 
-      <form onSubmit={handleFileSubmit}>
-        <label>
-          <span>Select file</span>
-          <input type="file" ref={fileRef} />
-        </label>
-        <br/>
+      <Flex as="form" onSubmit={handleFileSubmit} flexDirection="column">
+        <input type="file" ref={fileRef} />
 
-        <button type="submit">Upload file</button>
-      </form>
+        <Button mt="1rem" type="submit">
+          Upload file
+        </Button>
+      </Flex>
 
       <br />
 
-      {
-        uploadedFile ?
-          (
-            <div>
-              <p>File uploaded!</p>
-              <a href={`http://localhost:3000/file/${uploadedFile.id}`}>{uploadedFile.name}</a>
-            </div>
-          ) : null
-      }
-    </div>
+      {uploadedFile ? (
+        <div>
+          <p>File uploaded!</p>
+          <a href={`http://localhost:3000/file/${uploadedFile.id}`}>{uploadedFile.name}</a>
+        </div>
+      ) : null}
+    </Flex>
   )
 }
 
