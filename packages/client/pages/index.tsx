@@ -1,9 +1,10 @@
-import { Button, Flex, Heading, Input, Text } from '@chakra-ui/react'
-import { useRef, useState } from 'react'
+import { Button, Flex, Heading, Input, Link, Text } from '@chakra-ui/react'
+import { useRef } from 'react'
+import { useMutation } from 'react-query'
 import { uploadFile } from '../services/file'
 
 const Index = () => {
-  const [uploadedFile, setUploadedFile] = useState(null)
+  const { mutate, isLoading, isError, data } = useMutation(uploadFile)
 
   const fileRef = useRef(null)
 
@@ -16,8 +17,7 @@ const Index = () => {
     formData.append('document', file)
 
     try {
-      const savedFile = await uploadFile(formData)
-      setUploadedFile(savedFile)
+      await mutate(formData)
     } catch (err) {
       console.error(err)
     }
@@ -36,18 +36,24 @@ const Index = () => {
       <Flex as="form" onSubmit={handleFileSubmit} flexDirection="column">
         <input type="file" ref={fileRef} />
 
-        <Button mt="1rem" type="submit">
+        <Button mt="1rem" type="submit" isLoading={isLoading} loadingText="Uploading your file">
           Upload file
         </Button>
       </Flex>
 
       <br />
 
-      {uploadedFile ? (
-        <div>
-          <p>File uploaded!</p>
-          <a href={`http://localhost:3000/file/${uploadedFile.id}`}>{uploadedFile.name}</a>
-        </div>
+      {isError ? (
+        <Text fontSize="12px" fontWeight="bold">
+          We couldn't upload your file. Please try again.
+        </Text>
+      ) : null}
+
+      {!isLoading && !isError && data ? (
+        <Flex flexDirection="column" alignItems="center">
+          <Text>File uploaded!</Text>
+          <Link href={`http://localhost:3000/file/${data.id}`}>{data.name}</Link>
+        </Flex>
       ) : null}
     </Flex>
   )
