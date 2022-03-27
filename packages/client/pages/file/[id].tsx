@@ -1,36 +1,23 @@
 import { CopyIcon } from '@chakra-ui/icons'
-import { Button, Flex, Text, useToast } from '@chakra-ui/react'
+import { Button, Flex, Heading, Text, useToast } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useQuery } from 'react-query'
 import { FileInterface } from '../../interfaces/file'
-import { downloadFile, getFile } from '../../services/file'
+import { downloadFile as downloadFileHelper } from '../../services/file'
 
 const FilePage = () => {
   const router = useRouter()
   const { id } = router.query
   const toast = useToast()
-
-  const [file, setFile] = useState<FileInterface | null>(null)
-  const [errorLoadingFile, setErrorLoadingFile] = useState('')
-
-  useEffect(() => {
-    console.log({ fileId: id })
-    const loadFile = async () => {
-      try {
-        setFile(await getFile(String(id)))
-      } catch (err) {
-        console.error('LoadFile:Error::', err)
-        setErrorLoadingFile('Could not load file. It might not exist anymoe.')
-      }
-    }
-
-    if (id) loadFile()
-  }, [id])
+  const { data: file, isLoading: loadingFile, isError: errorLoadingFile } = useQuery<unknown, unknown, FileInterface>(`/file/${id}`, { enabled: !!id })
+  const { data: downloadedFile, isLoading: downloadingFile, isError: errorDownloadingFile, refetch: downloadFile } = useQuery(`/file/${id}/download`, downloadFileHelper, { enabled: false })
 
   const handleDownloadClick = async () => {
     if (!file) return
 
-    const { data } = await downloadFile(file.id)
+    // const { data } = await downloadFile(file.id)
+
+    const { data }: { data: BlobPart } = await downloadFile()
 
     const blob = new Blob([data])
     const link = document.createElement('a')
@@ -51,11 +38,11 @@ const FilePage = () => {
     }
   }
 
-  if (!id) return <h1>Ooops, no file to display</h1>
+  if (!id) return <Heading>Ooops, no file to display</Heading>
 
-  if (!file && !errorLoadingFile) return <h1>Loading file</h1>
+  if (!file && loadingFile) return <Heading>Loading file</Heading>
 
-  if (errorLoadingFile) return <h1>{errorLoadingFile}</h1>
+  if (errorLoadingFile) return <Heading>Error loading the file. The file may not exist or you don't have access to it.</Heading>
 
   return (
     <Flex w="100%" h="100%" flexDirection="column" alignItems="center" justifyContent="flex-start" pt="1rem">
@@ -75,7 +62,7 @@ const FilePage = () => {
       ) : null}
 
       <Flex mt="1.75rem" alignItems="center" justifyContent="center">
-        <Button type="button" onClick={handleDownloadClick}>
+        <Button type="button" onClick={handleDownloadClick} isLoading={downloadingFile} loadingText="Downloading your file">
           Download file
         </Button>
       </Flex>
