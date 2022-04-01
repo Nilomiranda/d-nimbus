@@ -10,20 +10,28 @@ const FilePage = () => {
   const { id } = router.query
   const toast = useToast()
   const { data: file, isLoading: loadingFile, isError: errorLoadingFile } = useQuery<unknown, unknown, FileInterface>(`/file/${id}`, { enabled: !!id })
-  const { data: downloadedFile, isLoading: downloadingFile, isError: errorDownloadingFile, refetch: downloadFile } = useQuery(`/file/${id}/download`, downloadFileHelper, { enabled: false })
+  const { isLoading: downloadingFile, refetch: downloadFile } = useQuery(``, () => downloadFileHelper(String(id)), { enabled: false })
 
   const handleDownloadClick = async () => {
     if (!file) return
 
-    // const { data } = await downloadFile(file.id)
+    try {
+      const { data: { data } } = await downloadFile()
 
-    const { data }: { data: BlobPart } = await downloadFile()
-
-    const blob = new Blob([data])
-    const link = document.createElement('a')
-    link.href = window.URL.createObjectURL(blob)
-    link.download = `${file.uuid}${file.name}`
-    link.click()
+      const blob = new Blob([data])
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(blob)
+      link.download = `${file.uuid}${file.name}`
+      link.click()
+    } catch (err) {
+      console.error('Error download file')
+      toast({
+        description: 'There was an error trying to download your file. Please try again.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      })
+    }
   }
 
   const handleCopyLinkClick = async () => {
