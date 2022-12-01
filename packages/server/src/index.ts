@@ -31,6 +31,8 @@ app.use(cors({
 app.use(bodyParser())
 app.use(router.routes())
 
+export default app;
+
 // const bree = new Bree({
 //   root: false,
 //   jobs: [
